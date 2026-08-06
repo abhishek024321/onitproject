@@ -164,7 +164,7 @@ function App() {
       style={{
         background: "linear-gradient(180deg, #4fa8d6 0%, #8fcbe6 18%, #c9e6f2 38%, #eaf5f9 62%, #f6fafb 100%)",
         fontFamily: "Inter, system-ui, sans-serif",
-        gridTemplateColumns: "22rem 1fr",
+        gridTemplateColumns: "clamp(15rem, 18vw, 22rem) 1fr",
       }}
     >
       {}
@@ -322,17 +322,9 @@ function App() {
               }
             >
               {}
-              <style>{`
-                .stats-scroll::-webkit-scrollbar { height: 6px; }
-                .stats-scroll::-webkit-scrollbar-track { background: transparent; }
-                .stats-scroll::-webkit-scrollbar-thumb { background: ${T.teal}; border-radius: 9999px; }
-              `}</style>
-              <div
-                className="stats-scroll flex items-stretch gap-3 mb-6 mt-3 overflow-x-auto"
-                style={{ scrollbarWidth: "thin", scrollbarColor: `${T.teal} transparent` }}
-              >
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6 mt-3 items-stretch">
                 {data.stats.map((s) => (
-                  <Card key={s.key} className="flex-1 min-w-[140px] min-h-[120px] py-2">
+                  <Card key={s.key} className="min-h-[120px] py-2">
                     <div
                       className="flex items-center gap-1.5 text-[16px] font-bold mb-1"
                       style={{ color: T.text }}
@@ -373,7 +365,7 @@ function App() {
                     </div>
                   </Card>
                 ))}
-                <Card className="flex-1 min-w-[150px] min-h-[120px] py-2">
+                <Card className="min-h-[120px] py-2">
                   <div
                     className="flex items-center gap-1.5 text-[16px] font-bold mb-2"
                     style={{ color: T.text }}
@@ -399,7 +391,7 @@ function App() {
                     </div>
                   </div>
                 </Card>
-                <Card className="flex-1 min-w-[170px] min-h-[120px] py-2">
+                <Card className="min-h-[120px] py-2">
                   <div
                     className="flex items-center gap-1.5 text-[16px] font-bold mb-2"
                     style={{ color: T.text }}
@@ -407,7 +399,7 @@ function App() {
                     <AlertTriangle size={13} style={{ color: T.teal }} />{" "}
                     Attention
                   </div>
-                  <div className="flex gap-3 text-[16px] mt-auto">
+                  <div className="flex flex-wrap gap-x-3 gap-y-2 text-[16px] mt-auto">
                     <div>
                       <span className="text-gray-800 text-[16px] block font-bold">
                         Repeat Bookings

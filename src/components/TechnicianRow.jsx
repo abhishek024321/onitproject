@@ -17,7 +17,7 @@ export function TechnicianRow({ technician }) {
       <img
         src={heroBanner}
         alt={id}
-        className="w-32 shrink-0 self-stretch object-contain"
+        className="w-20 sm:w-28 shrink-0 self-stretch object-contain"
         style={{ background: T.tealDarker }}
       />
 
