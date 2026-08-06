@@ -29,20 +29,15 @@ export function Select({ icon: Icon, name, label, value, options, onChange, extr
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`flex items-center gap-3 rounded-full border text-[19px] cursor-pointer transition-shadow duration-200 whitespace-nowrap ${
+        className={`flex items-center gap-2 sm:gap-3 rounded-full border text-[15px] sm:text-[19px] cursor-pointer transition-shadow duration-200 whitespace-nowrap pl-4 pr-3 py-2.5 sm:pl-10 sm:pr-9 sm:py-[22px] min-w-[130px] sm:min-w-[220px] ${
           open ? "shadow-md" : ""
         }`}
         style={{
           borderColor: open ? T.teal : "transparent",
           background: T.tealTint,
-          paddingLeft: 40,
-          paddingRight: 36,
-          paddingTop: 22,
-          paddingBottom: 22,
-          minWidth: 220,
         }}
       >
-        {Icon && <Icon size={26} strokeWidth={2.25} style={{ color: T.teal }} className="shrink-0" />}
+        {Icon && <Icon size={20} strokeWidth={2.25} style={{ color: T.teal }} className="shrink-0 sm:w-[26px] sm:h-[26px]" />}
         {label && (
           <span className="text-gray-700 shrink-0 whitespace-nowrap">
             {label}:

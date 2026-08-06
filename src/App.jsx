@@ -21,6 +21,8 @@ import {
   Flag,
   ThumbsUp,
   Wallet,
+  Menu,
+  X,
 } from "lucide-react";
 
 import { LOGO_SRC } from "./constants/logo";
@@ -54,6 +56,7 @@ function App() {
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedCard, setExpandedCard] = useState(null);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -160,7 +163,7 @@ function App() {
 
   return (
     <div
-      className="w-full min-h-screen grid"
+      className="w-full min-h-screen flex flex-col lg:grid"
       style={{
         background: "linear-gradient(180deg, #4fa8d6 0%, #8fcbe6 18%, #c9e6f2 38%, #eaf5f9 62%, #f6fafb 100%)",
         fontFamily: "Inter, system-ui, sans-serif",
@@ -168,18 +171,29 @@ function App() {
       }}
     >
       {}
+      {mobileNavOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+          onClick={() => setMobileNavOpen(false)}
+        />
+      )}
+
+      {}
       <aside
-        className="flex flex-col shrink-0 sticky top-0 h-screen self-start"
+        className={`flex flex-col shrink-0 fixed inset-y-0 left-0 z-40 w-72 h-screen transform transition-transform duration-300 ease-in-out lg:sticky lg:top-0 lg:z-auto lg:w-auto lg:translate-x-0 lg:self-start ${
+          mobileNavOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
         style={{
           background: `linear-gradient(180deg, ${T.teal} 0%, ${T.sidebar} 45%, ${T.sidebar} 100%)`,
         }}
       >
-        <div className="flex items-center px-5 py-5">
+        <div className="flex items-center justify-between px-5 py-5">
           <button
             type="button"
             onClick={() => {
               setActiveNav("Dashboard");
               setSearchQuery("");
+              setMobileNavOpen(false);
             }}
             aria-label="Go to Dashboard"
             className="cursor-pointer bg-transparent border-0 p-0 leading-none transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded"
@@ -187,8 +201,16 @@ function App() {
             <img
               src={LOGO_SRC}
               alt="OniT logo"
-              className="h-24 w-auto object-contain pointer-events-none"
+              className="h-16 sm:h-24 w-auto object-contain pointer-events-none"
             />
+          </button>
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setMobileNavOpen(false)}
+            className="lg:hidden text-white/80 hover:text-white p-1"
+          >
+            <X size={26} />
           </button>
         </div>
         <nav className="flex-1 px-3 space-y-4 mt-4">
@@ -197,7 +219,10 @@ function App() {
             return (
               <button
                 key={item.label}
-                onClick={() => setActiveNav(item.label)}
+                onClick={() => {
+                  setActiveNav(item.label);
+                  setMobileNavOpen(false);
+                }}
                 className="w-full flex items-center gap-4 px-4 py-5 rounded-lg text-[22px] font-bold transition-colors"
                 style={{
                   background: active ? T.sidebarActive : "transparent",
@@ -225,22 +250,32 @@ function App() {
       <main className="min-w-0 overflow-x-hidden flex flex-col h-full">
         {}
         <div
-          className="flex items-center justify-between px-6 py-4 shrink-0 sticky top-0 z-10"
+          className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 shrink-0 sticky top-0 z-10 gap-3"
           style={{ background: T.teal }}
         >
-          <h1 className="text-[23px] font-bold text-white">Dashboard</h1>
-          <div className="flex items-center gap-4 relative">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white text-[16px]">
-              <Search size={20} className="text-gray-800 shrink-0" />
+          <div className="flex items-center gap-2 min-w-0">
+            <button
+              type="button"
+              aria-label="Open menu"
+              onClick={() => setMobileNavOpen(true)}
+              className="lg:hidden text-white p-1 -ml-1 shrink-0"
+            >
+              <Menu size={24} />
+            </button>
+            <h1 className="text-[19px] sm:text-[23px] font-bold text-white truncate">Dashboard</h1>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-4 relative shrink-0">
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-white text-[16px]">
+              <Search size={18} className="text-gray-800 shrink-0" />
               <input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search..."
-                className="outline-none bg-transparent text-gray-700 placeholder-gray-400 w-32 sm:w-44 font-bold"
+                className="outline-none bg-transparent text-gray-700 placeholder-gray-400 w-20 sm:w-32 md:w-44 font-bold"
               />
             </div>
             <div
-              className="px-4 py-2 rounded-full bg-white text-[16px] font-bold"
+              className="hidden sm:block px-4 py-2 rounded-full bg-white text-[16px] font-bold"
               style={{ color: T.text }}
             >
               {data?.company || "—"}
@@ -248,9 +283,9 @@ function App() {
           </div>
         </div>
 
-        <div className="p-5 flex-1 min-h-0 h-full flex flex-col">
+        <div className="p-3 sm:p-5 flex-1 min-h-0 h-full flex flex-col">
           <div
-            className="flex flex-nowrap items-center gap-9 mb-6 bg-white rounded-xl border shadow-sm p-4"
+            className="flex flex-wrap items-center gap-3 sm:gap-9 mb-6 bg-white rounded-xl border shadow-sm p-3 sm:p-4"
             style={{ borderColor: T.cardBorder }}
           >
             <Select
@@ -292,7 +327,7 @@ function App() {
             />
             <button
               onClick={applyFilters}
-              className="flex items-center gap-2.5 px-7 py-[22px] rounded-full text-[19px] font-bold text-white shrink-0 hover:opacity-90 ml-auto"
+              className="flex items-center justify-center gap-2.5 px-7 py-[22px] rounded-full text-[19px] font-bold text-white shrink-0 hover:opacity-90 w-full sm:w-auto sm:ml-auto"
               style={{ background: T.teal }}
             >
               <FilterIcon size={18} />
