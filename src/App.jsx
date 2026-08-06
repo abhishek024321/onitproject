@@ -322,7 +322,15 @@ function App() {
               }
             >
               {}
-              <div className="flex items-stretch gap-3 mb-6 mt-3 overflow-x-auto">
+              <style>{`
+                .stats-scroll::-webkit-scrollbar { height: 6px; }
+                .stats-scroll::-webkit-scrollbar-track { background: transparent; }
+                .stats-scroll::-webkit-scrollbar-thumb { background: ${T.teal}; border-radius: 9999px; }
+              `}</style>
+              <div
+                className="stats-scroll flex items-stretch gap-3 mb-6 mt-3 overflow-x-auto"
+                style={{ scrollbarWidth: "thin", scrollbarColor: `${T.teal} transparent` }}
+              >
                 {data.stats.map((s) => (
                   <Card key={s.key} className="flex-1 min-w-[140px] min-h-[120px] py-2">
                     <div
