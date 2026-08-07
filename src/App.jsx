@@ -31,7 +31,6 @@ import { T, HC_BASE, PIE_JOBS, PIE_TECH } from "./constants/theme";
 import { inr } from "./utils/format";
 import { fetchDashboardData } from "./utils/mockData";
 import { LocationsMap } from "./components/LocationsMap";
-import { useTailwindCDN } from "./hooks/useTailwindCDN";
 import { Select } from "./components/Select";
 import { CustomDateRangeExtra } from "./components/CustomDateRangeExtra";
 import { Card } from "./components/Card";
@@ -41,8 +40,6 @@ import { TechnicianRow } from "./components/TechnicianRow";
 import { CallStatusDetailsCard } from "./components/CallStatusDetailsCard";
 
 function App() {
-  useTailwindCDN();
-  const [tailwindReady, setTailwindReady] = useState(false);
   const [filters, setFilters] = useState({
     dateRange: "Last 2 Days",
     serviceCategory: "AC",
@@ -57,26 +54,6 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedCard, setExpandedCard] = useState(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    const start = Date.now();
-    const check = () => {
-      if (cancelled) return;
-      const ready =
-        typeof window !== "undefined" &&
-        (window.tailwind || document.querySelector('style[data-tailwind], style[id^="__tw"]'));
-      if (ready || Date.now() - start > 4000) {
-        setTailwindReady(true);
-      } else {
-        requestAnimationFrame(check);
-      }
-    };
-    check();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const loadData = useCallback(async (f) => {
     setLoading(true);
@@ -122,44 +99,6 @@ function App() {
     : !q
       ? data.topLocations
       : data.topLocations.filter((l) => l.name.toLowerCase().includes(q));
-
-  if (!tailwindReady) {
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 16,
-          background: "#0d4f52",
-          fontFamily: "Inter, system-ui, sans-serif",
-        }}
-      >
-        <img
-          src={LOGO_SRC}
-          alt="OniT logo"
-          style={{ height: 56, width: "auto", objectFit: "contain" }}
-        />
-        <div
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: "50%",
-            border: "3px solid rgba(255,255,255,0.25)",
-            borderTopColor: "#ffffff",
-            animation: "onit-spin 0.8s linear infinite",
-          }}
-        />
-        <div style={{ color: "#ffffff", fontSize: 14, fontWeight: 700 }}>
-          Loading dashboard…
-        </div>
-        <style>{`@keyframes onit-spin { to { transform: rotate(360deg); } }`}</style>
-      </div>
-    );
-  }
 
   return (
     <div
@@ -717,45 +656,45 @@ function App() {
                   </div>
                   <div className="grid grid-cols-3 gap-3 text-center text-[17px] flex-1 min-h-0">
                     <div
-                      className="rounded-lg border-2 px-2 flex flex-col items-center justify-center gap-2"
+                      className="rounded-lg border-2 px-2 py-2 flex flex-col items-center justify-center gap-2 min-w-0 w-full overflow-hidden"
                       style={{ borderColor: "#000" }}
                     >
-                      <div className="flex items-center justify-center gap-1.5 text-gray-800 font-bold text-[16px]">
-                        <ImageIcon size={16} />
-                        Total Spent
+                      <div className="flex items-center justify-center gap-1.5 text-gray-800 font-bold text-[16px] w-full">
+                        <ImageIcon size={16} className="shrink-0" />
+                        <span className="truncate">Total Spent</span>
                       </div>
                       <div
-                        className="font-bold text-[19px]"
+                        className="font-bold text-[19px] w-full text-center break-words"
                         style={{ color: T.text }}
                       >
                         {inr(data.accountStatus.totalSpent)}
                       </div>
                     </div>
                     <div
-                      className="rounded-lg border-2 px-2 flex flex-col items-center justify-center gap-2"
+                      className="rounded-lg border-2 px-2 py-2 flex flex-col items-center justify-center gap-2 min-w-0 w-full overflow-hidden"
                       style={{ borderColor: "#000" }}
                     >
-                      <div className="flex items-center justify-center gap-1.5 text-gray-800 font-bold text-[16px]">
-                        <Flag size={16} />
-                        Job Done
+                      <div className="flex items-center justify-center gap-1.5 text-gray-800 font-bold text-[16px] w-full">
+                        <Flag size={16} className="shrink-0" />
+                        <span className="truncate">Job Done</span>
                       </div>
                       <div
-                        className="font-bold text-[19px]"
+                        className="font-bold text-[19px] w-full text-center break-words"
                         style={{ color: T.text }}
                       >
                         {data.accountStatus.jobsDone}
                       </div>
                     </div>
                     <div
-                      className="rounded-lg border-2 px-2 flex flex-col items-center justify-center gap-2"
+                      className="rounded-lg border-2 px-2 py-2 flex flex-col items-center justify-center gap-2 min-w-0 w-full overflow-hidden"
                       style={{ borderColor: "#000" }}
                     >
-                      <div className="flex items-center justify-center gap-1.5 text-gray-800 font-bold text-[16px]">
-                        <Wallet size={16} />
-                        Per Unit Cost
+                      <div className="flex items-center justify-center gap-1.5 text-gray-800 font-bold text-[16px] w-full">
+                        <Wallet size={16} className="shrink-0" />
+                        <span className="truncate">Per Unit Cost</span>
                       </div>
                       <div
-                        className="font-bold text-[19px]"
+                        className="font-bold text-[19px] w-full text-center break-words"
                         style={{ color: T.text }}
                       >
                         {inr(data.accountStatus.perUnitCost)}
